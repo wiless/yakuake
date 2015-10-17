@@ -23,6 +23,7 @@
 #define TERMINAL_H
 
 #include <KParts/Part>
+#include <kde_terminal_interface.h>
 
 
 class QKeyEvent;
@@ -50,7 +51,10 @@ class Terminal : public QObject
         void setSplitter(QWidget* splitter) { m_parentSplitter = splitter; }
 
         void runCommand(const QString& command);
-
+      QString CurrentPath() {
+// 	m_terminalInterface->
+	return m_currentPath;
+      }
         void manageProfiles();
         void editProfile();
 
@@ -81,7 +85,7 @@ class Terminal : public QObject
         void overrideShortcut(QKeyEvent* event, bool& override);
         void silenceDetected();
         void activityDetected();
-
+  void currentDirectoryChanged(QString);
 
     private:
         void disableOffendingPartActions();
@@ -92,8 +96,10 @@ class Terminal : public QObject
         int m_terminalId;
 
         KParts::Part* m_part;
+      
         TerminalInterface* m_terminalInterface;
-        QWidget* m_partWidget;
+	
+	QWidget* m_partWidget;
         QPointer<QWidget> m_terminalWidget;
         QWidget* m_parentSplitter;
 
@@ -103,6 +109,9 @@ class Terminal : public QObject
 
         bool m_monitorActivityEnabled;
         bool m_monitorSilenceEnabled;
+	
+	QString m_currentPath;
+
 };
 
 #endif

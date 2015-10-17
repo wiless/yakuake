@@ -31,10 +31,10 @@ kde4_add_app_icon(yakuake_SRCS "icons/hi*-app-yakuake.png")
 
 kde4_add_executable(yakuake ${yakuake_SRCS})
 
-target_link_libraries(yakuake ${KDE4_KNOTIFYCONFIG_LIBRARY} ${KDE4_KPARTS_LIBS} ${KDE4_KNEWSTUFF3_LIBS})
+target_link_libraries(yakuake ${KDE4_KNOTIFYCONFIG_LIBRARY} ${KDE4_KPARTS_LIBS} ${KDE4_KNEWSTUFF3_LIBS} X11)
 
 if(Q_WS_X11)
-  target_link_libraries(yakuake ${X11_X11_LIB})
+  target_link_libraries(yakuake ${X11_X11_LIB} X11)
 endif(Q_WS_X11)
 
 install(TARGETS yakuake ${INSTALL_TARGETS_DEFAULT_ARGS})

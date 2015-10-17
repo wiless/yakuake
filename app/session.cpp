@@ -22,7 +22,7 @@
 
 #include "session.h"
 #include "terminal.h"
-
+#include <QDebug>
 
 int Session::m_availableSessionId = 0;
 
@@ -66,7 +66,6 @@ void Session::setupSession(SessionType type)
 
             Terminal* terminal = addTerminal(m_baseSplitter);
             addTerminal(m_baseSplitter);
-
             QList<int> newSplitterSizes;
             newSplitterSizes << (splitterWidth / 2) << (splitterWidth / 2);
             m_baseSplitter->setSizes(newSplitterSizes);
@@ -87,8 +86,9 @@ void Session::setupSession(SessionType type)
             m_baseSplitter->setOrientation(Qt::Vertical);
 
             int splitterHeight = m_baseSplitter->height();
-
-            Terminal* terminal = addTerminal(m_baseSplitter);
+  
+	       
+	    Terminal* terminal = addTerminal(m_baseSplitter);
             addTerminal(m_baseSplitter);
 
             QList<int> newSplitterSizes;
@@ -156,7 +156,20 @@ void Session::setupSession(SessionType type)
 
 Terminal* Session::addTerminal(QWidget* parent)
 {
+      
+  
+  	    Terminal* current=this->getTerminal(this->activeTerminalId());
+	    QString pvspath;
+ 	    if (current!=NULL) {	   
+ 	    qDebug()<< "Current Terminal "<<this->activeTerminalId() << "is in at " << current->CurrentPath();
+	    pvspath="cd "+current->CurrentPath();
+ 	    }
+	    
+  
     Terminal* terminal = new Terminal(parent);
+    if(!pvspath.isEmpty()) 
+      terminal->runCommand(pvspath);
+    
     connect(terminal, SIGNAL(activated(int)), this, SLOT(setActiveTerminal(int)));
     connect(terminal, SIGNAL(manuallyActivated(Terminal*)), this, SIGNAL(terminalManuallyActivated(Terminal*)));
     connect(terminal, SIGNAL(titleChanged(int,QString)), this, SLOT(setTitle(int,QString)));

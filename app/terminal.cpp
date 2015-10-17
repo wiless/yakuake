@@ -33,6 +33,7 @@
 #include <KService>
 #include <KUser>
 
+
 #include <QAction>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -67,13 +68,13 @@ Terminal::Terminal(QWidget* parent) : QObject(parent)
     }
 
     m_part = factory ? (factory->create<KParts::Part>(parent)) : 0;
-
+     
     if (m_part)
     {
         connect(m_part, SIGNAL(setWindowCaption(QString)), this, SLOT(setTitle(QString)));
         connect(m_part, SIGNAL(overrideShortcut(QKeyEvent*,bool&)), this, SLOT(overrideShortcut(QKeyEvent*,bool&)));
         connect(m_part, SIGNAL(destroyed()), this, SLOT(deleteLater()));
-
+	connect(m_part, SIGNAL(currentDirectoryChanged(QString)),   this, SLOT(currentDirectoryChanged(QString)));
         m_partWidget = m_part->widget();
 
         m_terminalWidget = m_part->widget()->focusWidget();
@@ -106,6 +107,13 @@ void Terminal::deletePart()
         deleteLater();
 }
 
+
+void Terminal::currentDirectoryChanged(QString str){
+  m_currentPath=str;
+qDebug() << " ID " << this->id() << " Current changed " << m_currentPath;
+
+  
+}
 bool Terminal::eventFilter(QObject* /* watched */, QEvent* event)
 {
     if (event->type() == QEvent::FocusIn)
@@ -233,6 +241,7 @@ void Terminal::setTitle(const QString& title)
 void Terminal::runCommand(const QString& command)
 {
     m_terminalInterface->sendInput(command + '\n');
+    
 }
 
 void Terminal::manageProfiles()
@@ -272,6 +281,8 @@ void Terminal::setMonitorActivityEnabled(bool enabled)
             Qt::QueuedConnection, Q_ARG(bool, false));
     }
 }
+
+
 
 void Terminal::setMonitorSilenceEnabled(bool enabled)
 {

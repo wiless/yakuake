@@ -292,7 +292,7 @@ void TabBar::updateToggleMonitorSilenceMenu(int sessionId)
     QAction* anchor = m_toggleMonitorSilenceMenu->menuAction();
 
     SessionStack* sessionStack = m_mainWindow->sessionStack();
-
+    
     QStringList terminalIds = sessionStack->terminalIdsForSessionId(sessionId).split(',', QString::SkipEmptyParts);
 
     m_toggleMonitorSilenceMenu->clear();
