@@ -10,5 +10,23 @@ Everytime a terminal is split vertically or horizontally the default folder is `
 - Locally update the current directory path
 - When a new Terminal object is created, set it with the previous path
 
+#Installation
+```
+git clone git@github.com:wiless/yakuake.git
+cd yakuake
+mkdir build
+cd build
+cmake .. 
+make
+```
+If you want to install it in the system path use this
+```
+cmake .. -DCMAKE_INSTALL_PREFIX=/usr  
+make install
+```
+
+
+
+
 #TODOs
 - No intention to add anything more :)
